@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: xcode-27
+    steps:
+      - uses: actions/checkout@v5
+      - run: swift test
+      - run: scripts/build.sh
