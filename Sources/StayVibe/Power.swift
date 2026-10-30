@@ -12,6 +12,7 @@ import IOKit.pwr_mgt
     private var assertion: IOPMAssertionID = 0
     private var displayAssertion: IOPMAssertionID = 0
     private var keepDisplayAwake = false
+    private var lidWasClosed = false
     private var builtInDisplay: CGDirectDisplayID?
     private var savedBrightness: (display: CGDirectDisplayID, value: Float)?
     private var powerSource: CFRunLoopSource?
@@ -31,6 +32,7 @@ import IOKit.pwr_mgt
     func set(active: Bool, keepDisplayAwake: Bool = false) {
         let keepDisplayAwake = active && keepDisplayAwake
         guard active != Self.active || keepDisplayAwake != self.keepDisplayAwake else { return }
+        lidWasClosed = false
         if keepDisplayAwake != self.keepDisplayAwake {
             self.keepDisplayAwake = keepDisplayAwake
             if keepDisplayAwake {
@@ -58,13 +60,23 @@ import IOKit.pwr_mgt
         if active { tick() }
     }
 
-    /// Keep the desktop awake; dim only the built-in panel while the lid is closed.
+    /// Sleep the display on lid close unless display wake is enabled; then dim the built-in panel.
     /// macOS may still disconnect that panel on lid close, independently of these assertions.
     func tick() {
         guard Self.active else { return }
         Self.setClamshellSleep(disabled: true)
-        guard keepDisplayAwake else { return }
-        if Self.lidClosed {
+        let closed = Self.lidClosed
+        defer { lidWasClosed = closed }
+        guard keepDisplayAwake else {
+            if closed, !lidWasClosed, !Self.onlineDisplays.contains(where: { CGDisplayIsBuiltin($0) == 0 }) {
+                let process = Process()
+                process.executableURL = URL(fileURLWithPath: "/usr/bin/pmset")
+                process.arguments = ["displaysleepnow"]
+                try? process.run()
+            }
+            return
+        }
+        if closed {
             guard let display = builtInDisplay ?? Self.builtInDisplay else { return }
             if savedBrightness == nil {
                 guard let value = DisplayBrightness.get(display) else { return }
@@ -102,10 +114,14 @@ import IOKit.pwr_mgt
     }
 
     private static var builtInDisplay: CGDirectDisplayID? {
+        onlineDisplays.first { CGDisplayIsBuiltin($0) != 0 }
+    }
+
+    private static var onlineDisplays: [CGDirectDisplayID] {
         var ids = [CGDirectDisplayID](repeating: 0, count: 16)
         var count: UInt32 = 0
         CGGetOnlineDisplayList(16, &ids, &count)
-        return ids.prefix(Int(count)).first { CGDisplayIsBuiltin($0) != 0 }
+        return Array(ids.prefix(Int(count)))
     }
 
     /// Battery percentage while running on battery; nil on AC or without a battery.
