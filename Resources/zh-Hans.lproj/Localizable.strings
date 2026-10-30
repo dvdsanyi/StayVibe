@@ -1,0 +1,55 @@
+/* Simplified Chinese. Keys are the English UI strings. */
+
+/* Panel */
+"Settings" = "设置";
+"Usage and sessions appear here once you use Claude Code or Codex" = "开始使用 Claude Code 或 Codex 后，这里会显示额度和任务";
+"No usage data yet" = "暂无额度数据";
+"updated %@" = "%@更新";
+"resets in %@" = "%@ 后重置";
+"resets %@" = "%@ 重置";
+"Needs you" = "需要你处理";
+"Terminal" = "终端";
+
+/* Settings */
+"Back" = "返回";
+"Keep Awake" = "防休眠";
+"Keep display awake with lid closed" = "合盖时保持屏幕亮起";
+"Stay awake after sessions stop" = "任务停下后继续防休眠";
+"Off" = "关闭";
+"%d min" = "%d 分钟";
+"Notifications" = "通知";
+"Finished" = "任务完成";
+"Quota reset" = "额度重置";
+"General" = "通用";
+"Menu bar usage" = "菜单栏用量";
+"Launch at login" = "开机自启";
+"Automatic updates" = "自动更新";
+"Check Now" = "立即检查";
+"Language" = "语言";
+"System" = "跟随系统";
+"%@ missing" = "%@ 缺失";
+"Fix" = "修复";
+"Codex needs approval" = "Codex 需要批准";
+"Ready" = "已就绪";
+"Restore Defaults" = "恢复默认";
+"Quit" = "退出";
+
+/* Notifications */
+"%@ finished" = "%@ 已完成";
+"%@ needs you" = "%@ 需要你处理";
+"5-hour limit reset" = "5 小时额度已重置";
+"Weekly limit reset" = "每周额度已重置";
+"Battery below %d%%, Mac is allowed to sleep" = "电量低于 %d%%，已允许 Mac 休眠";
+
+/* Welcome */
+"A few steps to get started" = "几步完成设置";
+"Sounds and banners when a task finishes or needs you" = "任务完成或需要你处理时，发出提示音和通知";
+"Connect Claude Code and Codex" = "连接 Claude Code 和 Codex";
+"Adds StayVibe's hooks to Claude Code and Codex" = "为 Claude Code 和 Codex 添加 StayVibe 钩子";
+"Approve the hooks in Codex" = "在 Codex 中批准 hooks";
+"In ChatGPT, click the hook icon next to the message box, then Trust all" = "在 ChatGPT 中点输入框旁的钩子图标，然后点「Trust all」";
+"In VS Code's Codex panel, click the hook icon next to the message box, then Trust all" = "在 VS Code 的 Codex 面板中点输入框旁的钩子图标，然后点「Trust all」";
+"Open %@" = "打开 %@";
+"Allow" = "允许";
+"Install" = "安装";
+"Done" = "完成";
